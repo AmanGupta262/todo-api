@@ -35,3 +35,22 @@ module.exports.create = async (req, res) => {
         });
     }
 };
+
+module.exports.destroy = async (req, res) => {
+    try {
+        let task = await Task.findById(req.params.id);
+
+        task.remove();
+        return res.status(200).json({
+            message: "Task Deleted",
+            data: task
+        });
+
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            message: "Internal Server error",
+            error: e
+        });
+    }
+};
