@@ -27,3 +27,29 @@ module.exports.create = async (req, res) => {
     }
     
 };
+
+module.exports.login = async (req, res) => {
+    try {
+        const {email, password} = req.body;
+        const user = await User.findOne({ email: email });
+
+        if (user) {
+            const isValidPassword = await user.isValidPassword(password);
+            if(isValidPassword)
+                return res.status(200).json({
+                    message: "User Authenticated"
+                });
+        }
+
+        return res.status(500).json({
+            message: 'User Unauthenticated'
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            message: "Internal Server error",
+            error: e
+        });
+    }
+
+};
