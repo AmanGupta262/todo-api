@@ -33,14 +33,14 @@ module.exports.login = async (req, res) => {
     try {
         const {email, password} = req.body;
         const user = await User.findOne({ email: email });
-
         if (user) {
-            const isValidPassword = await user.isValidPassword(password);
+            const isValidPassword = await user.isValidPassword(user, password);
+            console.log(isValidPassword);
             if(isValidPassword)
                 return res.status(200).json({
                     message: "User Authenticated",
                     data: {
-                        token: jwt.sign(user.toJSON(), 'secret', {expiresIn: '100000'})
+                        token: jwt.sign(user.toJSON(), 'secret', {expiresIn: '1000000'})
                     }
                 });
         }
