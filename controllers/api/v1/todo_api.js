@@ -6,7 +6,9 @@ module.exports.index = async (req, res) => {
         
         return res.status(200).json({
             message: "List of Tasks",
-            tasks: tasks
+            data: {
+                tasks: tasks
+            }
         });
         
     } catch (e) {

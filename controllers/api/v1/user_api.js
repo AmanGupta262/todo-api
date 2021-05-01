@@ -1,4 +1,5 @@
 const User = require('../../../models/user');
+const jwt = require('jsonwebtoken');
 
 module.exports.create = async (req, res) => {
     try {
@@ -37,11 +38,14 @@ module.exports.login = async (req, res) => {
             const isValidPassword = await user.isValidPassword(password);
             if(isValidPassword)
                 return res.status(200).json({
-                    message: "User Authenticated"
+                    message: "User Authenticated",
+                    data: {
+                        token: jwt.sign(user.toJSON(), 'secret', {expiresIn: '100000'})
+                    }
                 });
         }
 
-        return res.status(500).json({
+        return res.status(422).json({
             message: 'User Unauthenticated'
         });
     } catch (e) {
