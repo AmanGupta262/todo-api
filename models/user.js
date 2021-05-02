@@ -21,15 +21,6 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-userSchema.pre(
-    'save',
-    async function(next) {
-        const hash = await bcrypt.hash(this.password, 10);
-
-        this.password = hash;
-        next();
-    }
-);
 
 userSchema.methods.isValidPassword = async function(user, password) {
     const compare = await bcrypt.compare(password, user.password);

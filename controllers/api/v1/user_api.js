@@ -1,9 +1,10 @@
 const User = require('../../../models/user');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 module.exports.create = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, password } = req.body;
 
         const user = await User.findOne({ email: email });
 
@@ -12,7 +13,7 @@ module.exports.create = async (req, res) => {
                 message: "User already exists"
             })
         }
-
+        req.body.password = await bcrypt.hash(password, 10);
         const newUser = await User.create(req.body);
 
         return res.status(200).json({
@@ -35,7 +36,6 @@ module.exports.login = async (req, res) => {
         const user = await User.findOne({ email: email });
         if (user) {
             const isValidPassword = await user.isValidPassword(user, password);
-            console.log(isValidPassword);
             if(isValidPassword)
                 return res.status(200).json({
                     message: "User Authenticated",

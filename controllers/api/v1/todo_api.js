@@ -7,9 +7,9 @@ module.exports.index = async (req, res) => {
         let tasks = user.todos;
 
         return res.status(200).json({
-            message: "List of Tasks",
+            message: "List of ToDos",
             data: {
-                tasks: tasks
+                todos: tasks
             }
         });
 
