@@ -45,7 +45,7 @@ module.exports.login = async (req, res) => {
                   message: "User Authenticated",
                   data: {
                     token: jwt.sign(user.toJSON(), "secret", {
-                      expiresIn: "1000000",
+                      expiresIn: "1h",
                     }),
                   },
                 });
